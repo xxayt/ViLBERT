@@ -1,6 +1,6 @@
 import os
 import numpy as np
-# from tensorpack.dataflow import RNGDataFlow, PrefetchDataZMQ
+from tensorpack.dataflow import RNGDataFlow, PrefetchDataZMQ
 from tensorpack.dataflow import *
 import lmdb
 import json

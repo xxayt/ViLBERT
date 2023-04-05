@@ -15,7 +15,7 @@ conda create -n vilbert python=3.6
 conda activate vilbert
 git clone https://github.com/jiasenlu/vilbert_beta
 cd vilbert_beta
-pip install -r requirements.txt
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 ```
 
 2. Install pytorch
