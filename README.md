@@ -76,7 +76,7 @@ python eval_retrieval.py --bert_model bert-base-uncased --from_pretrained save/b
 3: Use the following command to evaluate pre-trained 6 layer ViLBERT model. (only support single GPU for evaluation now):
 
 ```bash
-python eval_retrieval.py --bert_model bert-base-uncased --from_pretrained save/RetrievalFlickr30k_bert_base_6layer_6conect-pretrained/pytorch_model_19.bin --config_file config/bert_base_6layer_6conect.json --task 3 --split test --batch_size 1
+CUDA_VISIBLE_DEVICES=0 python eval_retrieval.py --bert_model bert-base-uncased --from_pretrained save/RetrievalFlickr30k_bert_base_6layer_6conect-pretrained/pytorch_model_19.bin --config_file config/bert_base_6layer_6conect.json --task 3 --split test --batch_size 1
 ```
 
 ### VQA

@@ -179,9 +179,7 @@ def main(args):
     if args.zero_shot:
         model = BertForMultiModalPreTraining.from_pretrained(args.from_pretrained, config)
     else:
-        model = VILBertForVLTasks.from_pretrained(
-            args.from_pretrained, config, num_labels=num_labels, default_gpu=default_gpu
-            )
+        model = VILBertForVLTasks.from_pretrained(args.from_pretrained, config, num_labels=num_labels, default_gpu=default_gpu)
 
     task_losses = LoadLosses(args, task_cfg, args.tasks.split('-'))
     model.to(device)
@@ -232,7 +230,7 @@ def main(args):
                     
                 else:
                     _, vil_logit, _, _, _, _, _ = model(question, features, spatials, segment_ids, input_mask, image_mask)
-                    score_matrix[caption_idx, image_idx*250:(image_idx+1)*250] = vil_logit.view(-1).cpu().numpy()
+                    score_matrix[caption_idx, image_idx*500:(image_idx+1)*500] = vil_logit.view(-1).cpu().numpy()
                     target_matrix[caption_idx, image_idx*500:(image_idx+1)*500] = target.view(-1).float().cpu().numpy()
 
                 if image_idx.item() == 1:
