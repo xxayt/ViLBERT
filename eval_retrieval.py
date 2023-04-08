@@ -6,7 +6,7 @@ import random
 from io import open
 import numpy as np
 
-from tensorboardX import SummaryWriter
+# from tensorboardX import SummaryWriter
 from tqdm import tqdm
 from bisect import bisect
 import yaml
@@ -31,7 +31,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def main():
+def parse_option():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -87,7 +87,7 @@ def main():
         "Positive power of 2: static loss scaling value.\n",
     )
     parser.add_argument(
-        "--num_workers", type=int, default=16, help="Number of workers in the dataloader."
+        "--num_workers", type=int, default=0, help="Number of workers in the dataloader."
     )
     parser.add_argument(
         "--save_name",
@@ -114,12 +114,12 @@ def main():
         "--batch_size", default=1, type=int, help="which split to use."
     )
     args = parser.parse_args()
+    return args
+
+
+def main(args):
     with open('vlbert_tasks.yml', 'r') as f:
         task_cfg = edict(yaml.safe_load(f))
-
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
 
     if args.baseline:
         from pytorch_pretrained_bert.modeling import BertConfig
@@ -232,7 +232,7 @@ def main():
                     
                 else:
                     _, vil_logit, _, _, _, _, _ = model(question, features, spatials, segment_ids, input_mask, image_mask)
-                    score_matrix[caption_idx, image_idx*500:(image_idx+1)*500] = vil_logit.view(-1).cpu().numpy()
+                    score_matrix[caption_idx, image_idx*250:(image_idx+1)*250] = vil_logit.view(-1).cpu().numpy()
                     target_matrix[caption_idx, image_idx*500:(image_idx+1)*500] = target.view(-1).float().cpu().numpy()
 
                 if image_idx.item() == 1:
@@ -271,5 +271,10 @@ def main():
         json.dump(others, open(json_path+ '_others.json', 'w'))
 
 if __name__ == "__main__":
+    args = parse_option()
+    print(args.seed)
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
 
-    main()
+    main(args)

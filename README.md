@@ -16,11 +16,13 @@ conda activate vilbert
 git clone https://github.com/jiasenlu/vilbert_beta
 cd vilbert_beta
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements2.txt
 ```
 
 2. Install pytorch
 ```
-conda install pytorch torchvision cudatoolkit=10.0 -c pytorch
+pip install pytorch torchvision cudatoolkit=10.0 -c pytorch
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch==1.7.1 torchvision==0.8.2
 ```
 
 3. Install apx, follows https://github.com/NVIDIA/apex
