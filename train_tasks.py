@@ -5,6 +5,7 @@ import os
 import random
 from io import open
 import numpy as np
+import time
 
 from tensorboardX import SummaryWriter
 from tqdm import tqdm
@@ -29,14 +30,14 @@ from torch.optim.lr_scheduler import LambdaLR, ReduceLROnPlateau
 import vilbert.utils as utils
 import torch.distributed as dist
 
-logging.basicConfig(
-    format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
-    datefmt="%m/%d/%Y %H:%M:%S",
-    level=logging.INFO,
-)
-logger = logging.getLogger(__name__)
+# logging.basicConfig(
+#     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
+#     datefmt="%m/%d/%Y %H:%M:%S",
+#     level=logging.INFO,
+# )
+# logger = logging.getLogger(__name__)
 
-def main():
+def parse_option():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -154,6 +155,9 @@ def main():
         "--compact", action="store_true", help="whether use compact vilbert model."
     )
     args = parser.parse_args()
+    return args
+
+def main(args):
     with open('vlbert_tasks.yml', 'r') as f:
         task_cfg = edict(yaml.load(f))
 
@@ -185,12 +189,19 @@ def main():
         task = 'TASK' + task_id
         loss_scale[task] = task_lr[i] / base_lr
 
-    if args.save_name:
-        prefix = '-' + args.save_name
-    else:
-        prefix = ''
+    # if args.save_name:
+    #     prefix = '-' + args.save_name
+    # else:
+    #     prefix = ''
+    prefix = '-' + args.save_name if args.save_name else ''
+    # refcoco+ _ bert_base_6layer_6conect -pretrained
     timeStamp = '-'.join(task_names) + '_' + args.config_file.split('/')[1].split('.')[0] + prefix
     savePath = os.path.join(args.output_dir, timeStamp)
+
+    creat_time = time.strftime("%Y%m%d-%H%M%S", time.localtime())  # 获取训练创建时间
+    args.path_log = savePath  # 创建log文件夹
+    os.makedirs(args.path_log, exist_ok=True)  # 创建训练log保存路径
+    logger = utils.create_logging(os.path.join(args.path_log, '%s-train.log' % (creat_time)))  # 创建训练保存log文件
 
     bert_weight_name = json.load(open("config/" + args.bert_model + "_weight_name.json", "r"))
 
@@ -367,7 +378,7 @@ def main():
         print("***** Running training *****")
         print("  Num Iters: ", task_num_iters)
         print("  Batch size: ", task_batch_size)
-        print("  Num steps: %d" %num_train_optimization_steps)
+        print("  Num steps: %d" %num_train_optimization_steps) 
 
     startIterID = 0
     # initialize the data iteration.
@@ -393,7 +404,7 @@ def main():
                         if default_gpu:
                             tbLogger.step_train(epochId, iterId, float(loss), float(score), optimizer.show_lr(), task_id, 'train')
 
-            if step % (20 * args.gradient_accumulation_steps) == 0 and step != 0 and default_gpu:
+            if step % (200 * args.gradient_accumulation_steps) == 0 and step != 0 and default_gpu:
                 tbLogger.showLossTrain()
 
         model.eval()
@@ -428,5 +439,5 @@ def main():
     tbLogger.txt_close()
     
 if __name__ == "__main__":
-
-    main()
+    args = parse_option()
+    main(args)

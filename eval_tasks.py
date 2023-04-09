@@ -87,7 +87,7 @@ def main():
         "Positive power of 2: static loss scaling value.\n",
     )
     parser.add_argument(
-        "--num_workers", type=int, default=10, help="Number of workers in the dataloader."
+        "--num_workers", type=int, default=0, help="Number of workers in the dataloader."
     )
     parser.add_argument(
         "--save_name",
@@ -96,7 +96,7 @@ def main():
         help="save name for training.", 
     )
     parser.add_argument(
-        "--batch_size", default=1000, type=int, help="what is the batch size?"
+        "--batch_size", default=512, type=int, help="what is the batch size?"
     )
     parser.add_argument(
         "--tasks", default='', type=str, help="1-2-3... training task separate by -"

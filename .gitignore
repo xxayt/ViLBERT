@@ -10,8 +10,9 @@ example/
 
 
 # outputs
-outputs/
+results/
 save/
+refcoco+_bert_base_6layer_6conect-pretrained/
 # **/*.pth
 
 # checkpoints

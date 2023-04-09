@@ -114,7 +114,7 @@ python eval_tasks.py --bert_model bert-base-uncased --from_pretrained save/VCR_Q
 3: To test on the RefCOCO+ val set and use the following command:
 
 ```bash
-python eval_tasks.py --bert_model bert-base-uncased --from_pretrained save/refcoco+_bert_base_6layer_6conect-pretrained/pytorch_model_19.bin --config_file config/bert_base_6layer_6conect.json --task 4
+CUDA_VISIBLE_DEVICES=0 python eval_tasks.py --bert_model bert-base-uncased --from_pretrained save/refcoco+_bert_base_6layer_6conect-pretrained/pytorch_model_19.bin --config_file config/bert_base_6layer_6conect.json --task 4
 ```
 
 ## Visiolinguistic Pre-training
@@ -147,13 +147,17 @@ python -m torch.distributed.launch --nproc_per_node=8 --nnodes=1 --node_rank=0 t
 ### Image Retrieval
 
 ```bash
-python -m torch.distributed.launch --nproc_per_node=8 --nnodes=1 --node_rank=0 train_tasks.py --bert_model bert-base-uncased --from_pretrained save/bert_base_6_layer_6_connect_freeze_0/pytorch_model_8.bin  --config_file config/bert_base_6layer_6conect.json  --learning_rate 4e-5 --num_workers 9 --tasks 3 --save_name pretrained
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --nnodes=1 --node_rank=0 train_tasks.py --bert_model bert-base-uncased --from_pretrained save/bert_base_6_layer_6_connect_freeze_0/pytorch_model_8.bin  --config_file config/bert_base_6layer_6conect.json  --learning_rate 4e-5 --num_workers 1 --tasks 3 --save_name pretrained
+
+CUDA_VISIBLE_DEVICES=0 python train_tasks.py --bert_model bert-base-uncased --from_pretrained save/bert_base_6_layer_6_connect_freeze_0/pytorch_model_8.bin  --config_file config/bert_base_6layer_6conect.json  --learning_rate 4e-5 --num_workers 1 --tasks 3 --save_name pretrained
 ```
 
 ### Refer Expression
 
 ```bash
 python -m torch.distributed.launch --nproc_per_node=8 --nnodes=1 --node_rank=0 train_tasks.py --bert_model bert-base-uncased --from_pretrained save/bert_base_6_layer_6_connect_freeze_0/pytorch_model_8.bin  --config_file config/bert_base_6layer_6conect.json  --learning_rate 4e-5 --num_workers 16 --tasks 4 --save_name pretrained
+
+CUDA_VISIBLE_DEVICES=0 python train_tasks.py --bert_model bert-base-uncased --from_pretrained save/bert_base_6_layer_6_connect_freeze_0/pytorch_model_8.bin --config_file config/bert_base_6layer_6conect.json  --learning_rate 4e-5 --num_workers 0 --tasks 4 --save_name pretrained
 ```
 
 - For single GPU training, use smaller batch size and simply remove ` -m torch.distributed.launch --nproc_per_node=8 --nnodes=1 --node_rank=0 ` 

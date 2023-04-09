@@ -241,6 +241,7 @@ def LoadDatasets(args, task_cfg, ids, split='trainval'):
                 batch_size=batch_size,
                 num_workers=num_workers,
                 pin_memory=True,
+                # pin_memory=False,
             )
             task_num_iters[task] = len(task_dataloader_train[task])
             task_batch_size[task] = batch_size
