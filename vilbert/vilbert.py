@@ -431,6 +431,7 @@ class BertIntermediate(nn.Module):
         return hidden_states
 
 
+
 class BertOutput(nn.Module):
     def __init__(self, config):
         super(BertOutput, self).__init__()
@@ -444,7 +445,6 @@ class BertOutput(nn.Module):
         hidden_states = self.LayerNorm(hidden_states + input_tensor)
         return hidden_states
 
-
 class BertLayer(nn.Module):
     def __init__(self, config):
         super(BertLayer, self).__init__()
@@ -457,7 +457,6 @@ class BertLayer(nn.Module):
         intermediate_output = self.intermediate(attention_output)
         layer_output = self.output(intermediate_output, attention_output)
         return layer_output, attention_probs
-
 
 class BertImageSelfAttention(nn.Module):
     def __init__(self, config):
@@ -557,7 +556,6 @@ class BertImageIntermediate(nn.Module):
         hidden_states = self.intermediate_act_fn(hidden_states)
         return hidden_states
 
-
 class BertImageOutput(nn.Module):
     def __init__(self, config):
         super(BertImageOutput, self).__init__()
@@ -571,7 +569,6 @@ class BertImageOutput(nn.Module):
         hidden_states = self.LayerNorm(hidden_states + input_tensor)
         return hidden_states
 
-
 class BertImageLayer(nn.Module):
     def __init__(self, config):
         super(BertImageLayer, self).__init__()
@@ -584,7 +581,6 @@ class BertImageLayer(nn.Module):
         intermediate_output = self.intermediate(attention_output)
         layer_output = self.output(intermediate_output, attention_output)
         return layer_output, attention_probs
-
 
 class BertBiAttention(nn.Module):
     def __init__(self, config):
@@ -755,6 +751,7 @@ class BertConnectionLayer(nn.Module):
 
         return layer_output1, layer_output2, co_attention_probs
 
+
 class BertEncoder(nn.Module):
     def __init__(self, config):
         super(BertEncoder, self).__init__()
@@ -894,7 +891,6 @@ class BertEncoder(nn.Module):
 
         return all_encoder_layers_t, all_encoder_layers_v, (all_attention_mask_t, all_attnetion_mask_v, all_attention_mask_c)
 
-
 class BertTextPooler(nn.Module):
     def __init__(self, config):
         super(BertTextPooler, self).__init__()
@@ -909,7 +905,6 @@ class BertTextPooler(nn.Module):
         pooled_output = self.activation(pooled_output)
         return pooled_output
 
-
 class BertImagePooler(nn.Module):
     def __init__(self, config):
         super(BertImagePooler, self).__init__()
@@ -923,7 +918,6 @@ class BertImagePooler(nn.Module):
         pooled_output = self.dense(first_token_tensor)
         pooled_output = self.activation(pooled_output)
         return pooled_output
-
 
 class BertPredictionHeadTransform(nn.Module):
     def __init__(self, config):
@@ -943,7 +937,6 @@ class BertPredictionHeadTransform(nn.Module):
         hidden_states = self.LayerNorm(hidden_states)
         return hidden_states
 
-
 class BertImgPredictionHeadTransform(nn.Module):
     def __init__(self, config):
         super(BertImgPredictionHeadTransform, self).__init__()
@@ -961,7 +954,6 @@ class BertImgPredictionHeadTransform(nn.Module):
         hidden_states = self.transform_act_fn(hidden_states)
         hidden_states = self.LayerNorm(hidden_states)
         return hidden_states
-
 
 class BertLMPredictionHead(nn.Module):
     def __init__(self, config, bert_model_embedding_weights):
@@ -1254,6 +1246,7 @@ class BertPreTrainedModel(nn.Module):
         return model
 
 
+
 class BertModel(BertPreTrainedModel):
     """BERT model ("Bidirectional Embedding Representations from a Transformer").
 
@@ -1394,7 +1387,6 @@ class BertModel(BertPreTrainedModel):
 
         return encoded_layers_t, encoded_layers_v, pooled_output_t, pooled_output_v, all_attention_mask
 
-
 class BertImageEmbeddings(nn.Module):
     """Construct the embeddings from image, spatial location (omit now) and token_type embeddings.
     """
@@ -1414,7 +1406,6 @@ class BertImageEmbeddings(nn.Module):
         embeddings = self.dropout(embeddings)
         
         return embeddings
-
 
 class BertForMultiModalPreTraining(BertPreTrainedModel):
     """BERT model with multi modal pre-training heads.

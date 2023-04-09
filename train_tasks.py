@@ -56,7 +56,7 @@ def parse_option():
     )
     parser.add_argument(
         "--output_dir",
-        default="save",
+        default="./logs",
         type=str,
         help="The output directory where the model checkpoints will be written.",
     )
@@ -121,7 +121,7 @@ def parse_option():
         "--save_name",
         default='',
         type=str,
-        help="save name for training.", 
+        help="save name for training.",
     )
     parser.add_argument(
         "--use_chunk", default=0, type=float, help="whether use chunck for parallel training."
